@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyc.mapper.UserMapper">
+    
+    <resultMap id="userRoleMapper" type="com.cyc.dto.UserDTO">
+        <id property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="com.cyc.pojo.Role">
+            <id property="rid" column="rid"/>
+            <result property="role" column="role"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserByUsername" resultMap="userRoleMapper">
+        SELECT u.*,r.*
+        FROM role r
+        LEFT JOIN user_role ur ON r.`rid`=ur.`rid`
+        LEFT JOIN `user` u ON u.`uid`=ur.`uid`
+        WHERE username=#{username}
+    </select>
+</mapper>
